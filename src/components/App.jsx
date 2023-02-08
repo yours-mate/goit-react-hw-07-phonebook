@@ -1,11 +1,18 @@
-import { getContacts } from 'redux/selectors/selectors';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { ContactForm } from './ContactForm/ContactForm';
-import { ContactsList } from './ContactsList/ContactsList';
 import { Filter } from './Filter/Filter';
+import { ContactsList } from './ContactsList/ContactsList';
+import { fetchContacts } from 'redux/operations/operations';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function App() {
-  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   return (
     <div
@@ -20,7 +27,8 @@ export function App() {
       <ContactForm />
       <h2>Contacts</h2>
       <Filter />
-      {contacts.length > 0 && <ContactsList />}
+      <ContactsList />
+      <ToastContainer />
     </div>
   );
 }

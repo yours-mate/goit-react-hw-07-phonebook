@@ -8,6 +8,7 @@ export function ContactsList() {
   const currentFilter = useSelector(getFilter);
 
   const searchedContacts = useMemo(() => {
+    console.log(currentContacts);
     return currentContacts.filter(contact =>
       contact.name.toLowerCase().includes(currentFilter.toLowerCase())
     );

@@ -1,16 +1,26 @@
-import { saveContact } from 'redux/contactsSlice/contactsSlice';
+import { addContact } from 'redux/operations/operations';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { getContacts } from 'redux/selectors/selectors';
+import { toast } from 'react-toastify';
 import css from '../ContactForm/ContactForm.module.css';
 
 export function ContactForm() {
   const dispatch = useDispatch();
+  const currentContacts = useSelector(getContacts);
 
   const handleFormSubmit = e => {
     e.preventDefault();
     const form = e.currentTarget;
     const name = form.elements.name.value;
     const number = form.elements.number.value;
-    dispatch(saveContact(name, number));
+    const names = currentContacts.map(contact => contact.name.toLowerCase());
+    if (names.includes(name.toLowerCase())) {
+      return toast.warning(
+        `Subscriber ${name.toUpperCase()} is already in the phonebook`
+      );
+    }
+    dispatch(addContact({ name, number }));
     form.reset();
   };
   return (
